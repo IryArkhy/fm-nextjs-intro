@@ -2,8 +2,8 @@
 import { jsx } from 'theme-ui'
 import Link from 'next/link'
 
-export default () => {
-  const notes = new Array(15).fill(1).map((e, i) => ({id: i, title: `This is my note ${i}`}))
+export default ({notes}) => {
+  // const notes = new Array(15).fill(1).map((e, i) => ({id: i, title: `This is my note ${i}`}))
 
   return (
     <div sx={{variant: 'containers.page'}}>
@@ -24,4 +24,15 @@ export default () => {
       </div>
     </div>
   )
+}
+
+//only runs on the server !!!!!!!1
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.API_URL}/api/note/`)//no relative paths //use env for changing the base URL for deployment
+
+
+  const {data} = await res.json()
+  return {
+    props: {notes: data}
+  }
 }
